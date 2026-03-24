@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AeroGIS Pro v4 — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+
+/* ─── THEME ─── */
+:root{
+  --bg:       #05080f;
+  --bg2:      #0b1120;
+  --bg3:      #111b30;
+  --bg4:      #1a2745;
+  --border:   rgba(56,189,248,.10);
+  --border2:  rgba(56,189,248,.30);
+  --border3:  rgba(56,189,248,.55);
+  --text:     #dde8f4;
+  --muted:    #5a7898;
+  --faint:    #1e2f45;
+  --blue:     #38bdf8;
+  --blue2:    #0ea5e9;
+  --green:    #22d3a0;
+  --amber:    #f5a623;
+  --red:      #f87171;
+  --purple:   #b48ef8;
+  --teal:     #2dd4bf;
+  --gold:     #e5c347;
+  --font-head:'Rajdhani',sans-serif;
+  --font-mono:'Share Tech Mono',monospace;
+  --font-serif:'Crimson Pro',Georgia,serif;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ─── BODY ─── */
+body{
+  font-family:var(--font-head);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+
+/* ─── STICKY NAV ─── */
+.topnav{
+  position:sticky;top:0;z-index:200;
+  height:50px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+  background:rgba(5,8,15,.92);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:var(--font-head);font-size:18px;font-weight:700;
+  color:#fff;letter-spacing:.06em;text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-brand .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.nav-links{display:flex;gap:0}
+.nav-links a{
+  font-size:12px;font-weight:600;color:var(--muted);
+  text-decoration:none;padding:6px 14px;border-radius:4px;
+  letter-spacing:.06em;text-transform:uppercase;
+  transition:color .15s,background .15s;
+}
+.nav-links a:hover{color:var(--blue);background:rgba(56,189,248,.07)}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:80px 24px 60px;
+  position:relative;overflow:hidden;
+}
+/* grid background */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(56,189,248,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(56,189,248,.04) 1px,transparent 1px);
+  background-size:52px 52px;
+  pointer-events:none;
+}
+/* glow */
+.hero::after{
+  content:'';position:absolute;
+  top:-20%;left:50%;transform:translateX(-50%);
+  width:900px;height:500px;
+  background:radial-gradient(ellipse,rgba(56,189,248,.09) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(56,189,248,.25);
+  background:rgba(56,189,248,.06);
+  border-radius:999px;padding:5px 18px;
+  font-family:var(--font-mono);font-size:11px;color:var(--blue);
+  letter-spacing:.12em;margin-bottom:36px;position:relative;z-index:1;
+}
+.hero-title{
+  font-family:var(--font-head);
+  font-size:clamp(52px,9vw,110px);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  position:relative;z-index:1;
+  margin-bottom:6px;
+}
+.hero-title .a{color:#fff}
+.hero-title .g{color:var(--blue)}
+.hero-title .v{
+  display:block;
+  font-size:.24em;font-weight:400;font-family:var(--font-mono);
+  color:var(--green);letter-spacing:.25em;text-transform:uppercase;
+  margin-top:12px;
+}
+.hero-sub{
+  font-family:var(--font-serif);font-size:clamp(17px,2.4vw,22px);
+  font-style:italic;color:var(--muted);
+  margin:24px 0 52px;max-width:640px;
+  position:relative;z-index:1;line-height:1.6;
+}
+/* stats row */
+.hero-stats{
+  display:flex;gap:0;
+  border:1px solid var(--border2);border-radius:10px;
+  overflow:hidden;margin-bottom:48px;
+  position:relative;z-index:1;
+}
+.hstat{
+  padding:20px 32px;text-align:center;
+  border-right:1px solid var(--border);
+  background:rgba(11,17,32,.7);
+}
+.hstat:last-child{border-right:none}
+.hstat-val{
+  font-family:var(--font-mono);font-size:32px;font-weight:500;
+  color:var(--blue);line-height:1;margin-bottom:5px;
+}
+.hstat-lbl{
+  font-size:10px;font-weight:600;color:var(--muted);
+  letter-spacing:.14em;text-transform:uppercase;
+}
+/* ctas */
+.hero-cta{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  position:relative;z-index:1;
+}
+.cta-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;background:var(--blue2);
+  color:#fff;font-family:var(--font-head);font-size:15px;font-weight:600;
+  border-radius:6px;text-decoration:none;letter-spacing:.04em;
+  transition:all .2s;border:1px solid var(--blue2);
+}
+.cta-primary:hover{background:#0284c7;box-shadow:0 8px 28px rgba(56,189,248,.3);transform:translateY(-1px)}
+.cta-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;background:transparent;
+  color:var(--text);font-family:var(--font-head);font-size:15px;font-weight:600;
+  border-radius:6px;text-decoration:none;letter-spacing:.04em;
+  transition:all .2s;border:1px solid var(--border2);
+}
+.cta-ghost:hover{background:rgba(56,189,248,.08);border-color:var(--blue)}
+/* scroll hint */
+.scroll-cue{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:.12em;
+}
+.scroll-arrow{animation:bob 2s infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.section{padding:88px 0;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+
+/* ─── SECTION HEADERS ─── */
+.eyebrow{
+  font-family:var(--font-mono);font-size:11px;color:var(--blue);
+  letter-spacing:.18em;text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
+}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--blue);flex-shrink:0}
+.sec-h{
+  font-family:var(--font-head);
+  font-size:clamp(32px,5vw,52px);font-weight:700;
+  line-height:1.0;letter-spacing:.03em;text-transform:uppercase;
+  color:#fff;margin-bottom:18px;
+}
+.sec-h em{color:var(--blue);font-style:normal}
+.sec-lead{
+  font-family:var(--font-serif);font-size:18px;color:var(--muted);
+  max-width:700px;line-height:1.85;
+}
+
+/* ─── FEATURE GRID ─── */
+.fgrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:14px;margin-top:52px;
+}
+.fcard{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:26px;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.fcard::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.fcard:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.fcard:hover::after{opacity:1}
+.fcard-icon{font-size:26px;margin-bottom:14px;display:block}
+.fcard-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:.03em;text-transform:uppercase}
+.fcard-body{font-size:13px;color:var(--muted);line-height:1.75;font-family:var(--font-serif)}
+.fcard-tag{
+  display:inline-block;margin-top:14px;
+  padding:3px 10px;border-radius:3px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;
+  background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.2);color:var(--blue);
+}
+
+/* ─── DATA TABLE ─── */
+.dtable{width:100%;border-collapse:collapse;font-size:13px;margin-top:18px}
+.dtable thead tr{background:rgba(56,189,248,.06)}
+.dtable th{
+  padding:10px 14px;text-align:left;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
+  color:var(--muted);font-weight:400;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+}
+.dtable td{
+  padding:9px 14px;border-bottom:1px solid rgba(56,189,248,.05);
+  color:var(--muted);font-family:var(--font-serif);font-size:14px;
+  vertical-align:middle;
+}
+.dtable td:first-child{color:var(--text);font-family:var(--font-head);font-weight:600;font-size:13px}
+.dtable tr:last-child td{border-bottom:none}
+.dtable tr:hover td{background:rgba(56,189,248,.025)}
+.dtable code{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--green);background:rgba(34,211,160,.08);
+  padding:2px 6px;border-radius:3px;
+}
+
+/* ─── CATEGORY LABEL ─── */
+.cat-label{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;
+  color:var(--blue);text-transform:uppercase;
+  padding:7px 14px;background:rgba(56,189,248,.06);
+  border:1px solid var(--border);border-radius:5px 5px 0 0;border-bottom:none;
+  margin-top:28px;display:block;
+}
+
+/* ─── BADGE ─── */
+.badge{
+  display:inline-flex;align-items:center;
+  padding:2px 9px;border-radius:3px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;font-weight:500;
+}
+.ba{background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.25);color:var(--blue)}
+.bg{background:rgba(34,211,160,.10);border:1px solid rgba(34,211,160,.25);color:var(--green)}
+.bam{background:rgba(245,166,35,.10);border:1px solid rgba(245,166,35,.25);color:var(--amber)}
+.br{background:rgba(248,113,113,.10);border:1px solid rgba(248,113,113,.25);color:var(--red)}
+.bp{background:rgba(180,142,248,.10);border:1px solid rgba(180,142,248,.25);color:var(--purple)}
+
+/* ─── CODE BLOCK ─── */
+.code-box{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:20px 24px;
+  font-family:var(--font-mono);font-size:13px;line-height:1.85;
+  color:var(--text);overflow-x:auto;margin:18px 0;position:relative;
+}
+.code-box .lang{
+  position:absolute;top:10px;right:14px;
+  font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+}
+.code-box .cm{color:var(--muted)}
+.code-box .ck{color:var(--purple)}
+.code-box .cs{color:var(--green)}
+.code-box .cn{color:var(--blue)}
+
+/* ─── INLINE CODE ─── */
+code{
+  font-family:var(--font-mono);font-size:12px;
+  color:var(--teal);background:rgba(45,212,191,.08);
+  padding:2px 6px;border-radius:3px;
+}
+
+/* ─── TWO-COL ─── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px}
+@media(max-width:720px){.two-col{grid-template-columns:1fr}}
+
+/* ─── PIPELINE ─── */
+.pipeline{
+  position:relative;margin-top:48px;
+  padding-left:56px;
+}
+.pipeline::before{
+  content:'';position:absolute;
+  left:19px;top:10px;bottom:10px;width:2px;
+  background:linear-gradient(to bottom,var(--blue),var(--teal),var(--green));
+}
+.pipe-step{
+  position:relative;margin-bottom:0;
+  padding:18px 0 18px;
+}
+.pipe-step::before{
+  content:'';position:absolute;
+  left:-49px;top:22px;width:40px;height:40px;
+  border-radius:50%;
+  background:var(--bg3);border:2px solid var(--blue);
+  z-index:1;
+}
+.pipe-num{
+  position:absolute;left:-42px;top:30px;
+  font-family:var(--font-mono);font-size:12px;color:var(--blue);
+  z-index:2;width:26px;text-align:center;line-height:1;
+}
+.pipe-title{font-size:16px;font-weight:700;color:#fff;letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}
+.pipe-desc{font-family:var(--font-serif);font-size:14px;color:var(--muted);line-height:1.75}
+.pipe-formula{
+  display:inline-block;margin-top:8px;
+  font-family:var(--font-mono);font-size:12px;
+  color:var(--green);background:rgba(34,211,160,.07);
+  border:1px solid rgba(34,211,160,.18);
+  padding:4px 12px;border-radius:4px;
+}
+
+/* ─── ZONE GRID ─── */
+.zone-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:10px;margin-top:28px;
+}
+.zone-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;background:var(--bg2);
+  border:1px solid var(--border);border-radius:7px;
+}
+.zone-swatch{width:16px;height:16px;border-radius:3px;flex-shrink:0}
+.zone-name{font-size:14px;font-weight:600;color:var(--text);letter-spacing:.02em}
+.zone-hint{font-family:var(--font-serif);font-size:12px;color:var(--muted);margin-top:1px}
+
+/* ─── NFZ TABLE ─── */
+.nfz-dot{
+  display:inline-block;width:10px;height:10px;
+  border-radius:50%;margin-right:6px;
+}
+
+/* ─── ALERT BOX ─── */
+.abox{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:16px 20px;border-radius:8px;
+  font-family:var(--font-serif);font-size:14px;line-height:1.75;
+  margin:22px 0;
+}
+.abox.info{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.22);color:var(--blue)}
+.abox.warn{background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.22);color:var(--amber)}
+.abox.tip {background:rgba(34,211,160,.06);border:1px solid rgba(34,211,160,.22);color:var(--teal)}
+.abox .icon{font-size:18px;flex-shrink:0;padding-top:2px}
+.abox strong{display:block;font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:.04em;margin-bottom:3px}
+
+/* ─── QUICK CARDS ─── */
+.qgrid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:10px;margin-top:28px;
+}
+.qcard{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:7px;padding:14px 16px;
+}
+.qcard-key{font-family:var(--font-mono);font-size:12px;color:var(--green);margin-bottom:5px}
+.qcard-val{font-family:var(--font-serif);font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ─── AUTHOR CARD ─── */
+.author-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:14px;padding:38px;
+  display:flex;gap:30px;align-items:flex-start;
+  margin-top:44px;
+}
+.author-av{
+  width:74px;height:74px;flex-shrink:0;border-radius:50%;
+  background:linear-gradient(135deg,#0c4a6e,#38bdf8);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-size:28px;font-weight:700;color:#fff;
+}
+.author-name{font-size:22px;font-weight:700;color:#fff;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.author-role{font-family:var(--font-mono);font-size:12px;color:var(--blue);letter-spacing:.08em;margin-bottom:14px}
+.author-bio{font-family:var(--font-serif);font-size:15px;color:var(--muted);line-height:1.8}
+.author-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+
+/* ─── DIVIDER ─── */
+.hr{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:52px 0}
+
+/* ─── FOOTER ─── */
+.footer{
+  padding:56px 0;text-align:center;
+  border-top:1px solid var(--border);
+}
+.footer-logo{
+  font-family:var(--font-head);font-size:28px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:#fff;margin-bottom:10px;
+}
+.footer-logo span{color:var(--blue)}
+.footer-text{font-family:var(--font-serif);font-size:14px;color:var(--muted);line-height:2}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .fgrid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column}
+  .hstat{border-right:none;border-bottom:1px solid var(--border)}
+  .hstat:last-child{border-bottom:none}
+  .nav-links{display:none}
+  .author-card{flex-direction:column}
+  .author-av{width:56px;height:56px;font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ STICKY NAV ══ -->
+<nav class="topnav">
+  <a href="#top" class="nav-brand"><span class="dot"></span>AeroGIS Pro</a>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#modules">Modules</a>
+    <a href="#aircraft">Aircraft</a>
+    <a href="#sensors">Sensors</a>
+    <a href="#epl">Planning Lab</a>
+    <a href="#exports">Exports</a>
+    <a href="#kcaa">KCAA</a>
+    <a href="#start">Quick Start</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow">
+    <span>●</span> v4.0 — Production Release &nbsp;·&nbsp; Single-File Application &nbsp;·&nbsp; KCAA LN 182/2022 Compliant
+  </div>
+
+  <h1 class="hero-title">
+    <span class="a">Aero</span><span class="g">GIS</span>
+    <span class="v">Pro — Aerial Survey Intelligence Platform</span>
+  </h1>
+
+  <p class="hero-sub">
+    Professional drone survey planning, airspace intelligence, and environmental land-use
+    modelling for operators, GIS engineers, and county planners working across Kenya and
+    East Africa.
+  </p>
+
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val">16</div><div class="hstat-lbl">Drone Platforms</div></div>
+    <div class="hstat"><div class="hstat-val">13</div><div class="hstat-lbl">Camera / Sensors</div></div>
+    <div class="hstat"><div class="hstat-val">9</div><div class="hstat-lbl">Modules</div></div>
+    <div class="hstat"><div class="hstat-val">7</div><div class="hstat-lbl">Export Formats</div></div>
+    <div class="hstat"><div class="hstat-val">134</div><div class="hstat-lbl">Functions</div></div>
+    <div class="hstat"><div class="hstat-val">0</div><div class="hstat-lbl">Dependencies</div></div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="https://maweu01.github.io/AeroGIS-Survey-Planner" target="_blank" class="cta-primary">⚡ Launch Application</a>
+    <a href="https://github.com/maweu01/AeroGIS-Survey-Planner" target="_blank" class="cta-ghost">⌥ GitHub Repository</a>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Documentation</span>
+    <span class="scroll-arrow">↓</span>
+  </div>
+</section>
+
+<!-- ══ OVERVIEW ══ -->
+<section class="section" id="overview">
+  <div class="wrap">
+    <div class="eyebrow">Overview</div>
+    <h2 class="sec-h">One file.<br><em>Everything</em> you need.</h2>
+    <p class="sec-lead">
+      AeroGIS Pro v4 is a zero-dependency, single-file HTML application that delivers a
+      complete aerial survey planning and environmental intelligence platform. No server,
+      no build process, no npm. Open <code>index.html</code> in any modern browser and
+      the entire system — maps, aircraft database, KCAA registry, and the 7-step
+      Environmental Planning Lab — is immediately available.
+    </p>
+
+    <div class="abox info" style="margin-top:36px;">
+      <div class="icon">ℹ</div>
+      <div>
+        <strong>Architecture</strong>
+        The complete application ships as a single <code>index.html</code> file (181 KB).
+        It uses Leaflet 1.9.4 and Leaflet Draw 1.0.4 from CDN, the Open-Meteo public
+        weather API (no key required), and Esri World Services for basemaps and hillshade.
+        All logic is ES5 JavaScript — no transpiler, no bundler, no framework.
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:52px;">
+      <div>
+        <div class="eyebrow">Technology Stack</div>
+        <table class="dtable">
+          <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+          <tbody>
+            <tr><td>Map Engine</td><td><code>Leaflet 1.9.4</code></td></tr>
+            <tr><td>Draw Tools</td><td><code>Leaflet Draw 1.0.4</code></td></tr>
+            <tr><td>Satellite Basemap</td><td>Esri World Imagery (ArcGIS)</td></tr>
+            <tr><td>Hybrid Labels</td><td>Esri World Boundaries &amp; Places</td></tr>
+            <tr><td>DEM Overlay</td><td>Esri World Hillshade — SRTM-derived</td></tr>
+            <tr><td>Topographic</td><td>OpenTopoMap — contour overlay</td></tr>
+            <tr><td>Street Map</td><td>OpenStreetMap (OSM)</td></tr>
+            <tr><td>Weather API</td><td>Open-Meteo (free, no key)</td></tr>
+            <tr><td>Runtime</td><td>ES5 JavaScript — universal browser</td></tr>
+            <tr><td>Hosting</td><td>GitHub Pages · Any static server</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="eyebrow">Regulatory Framework</div>
+        <table class="dtable">
+          <thead><tr><th>Instrument</th><th>Scope</th></tr></thead>
+          <tbody>
+            <tr><td>KCAA RPAS Regulations 2020</td><td>LN No. 182 of 2022</td></tr>
+            <tr><td>ICAO Annex 2</td><td>Rules of the Air</td></tr>
+            <tr><td>ICAO Annex 6</td><td>Operation of Aircraft</td></tr>
+            <tr><td>Open Category</td><td>Classes A1 / A2 / A3</td></tr>
+            <tr><td>Specific Category</td><td>STS-01 · STS-02</td></tr>
+            <tr><td>Certified Category</td><td>CERT-LG</td></tr>
+            <tr><td>Kenya EMCA Cap. 387</td><td>Environmental planning</td></tr>
+            <tr><td>Physical Planning Act Cap. 286</td><td>Land use zoning</td></tr>
+            <tr><td>NEMA EIA Regulations</td><td>Dev. impact assessment</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODULES ══ -->
+<section class="section" id="modules">
+  <div class="wrap">
+    <div class="eyebrow">Core Modules</div>
+    <h2 class="sec-h">Nine modules.<br><em>Unified</em> workspace.</h2>
+    <p class="sec-lead">
+      Draw a survey polygon once — it flows automatically into the flight planner, site
+      assessment engine, change detection module, Environmental Planning Lab, and every
+      export format. All nine modules share the same Leaflet map canvas and data state.
+    </p>
+
+    <div class="fgrid">
+
+      <div class="fcard">
+        <span class="fcard-icon">✈️</span>
+        <div class="fcard-title">Flight Planner</div>
+        <div class="fcard-body">
+          Five preset survey shapes — rectangle, L-shape, triangle, corridor, circle — plus
+          freehand polygon draw. Adjustable altitude (0–500 m), camera FOV (30–120°), side
+          overlap (50–95%), forward overlap (50–95%), and wind direction (0–315°). Generates
+          parallel lawnmower flight lines with correct swath spacing. All shapes are fully
+          resizable by dragging Leaflet Draw vertex handles after placement.
+        </div>
+        <span class="fcard-tag">MISSION PLANNING</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">📐</span>
+        <div class="fcard-title">Coordinate Entry</div>
+        <div class="fcard-body">
+          Five precision input methods: manual point-by-point lat/lng entry, bounding box
+          (N/S/E/W), circle by centre coordinate and radius (minimum 10 m), WKT polygon
+          import using standard <code>POLYGON((lng lat,...))</code> syntax, and DMS
+          converter supporting the format <code>1°17'10.8"S 36°49'2"E</code>. All methods
+          produce resizable editable polygons immediately ready for flight planning.
+        </div>
+        <span class="fcard-tag">PRECISION INPUT</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">🏗️</span>
+        <div class="fcard-title">Site Assessment</div>
+        <div class="fcard-body">
+          Six automated assessment types: <b>Real Estate</b> (development potential, plot yield,
+          infrastructure cost); <b>Urban Planning</b> (population capacity, road length, water
+          demand); <b>Solar Feasibility</b> (kWp capacity, annual generation kWh, KSH revenue);
+          <b>Flood Risk</b> (return periods, drainage coefficient, mitigation measures);
+          <b>Soil &amp; Agriculture</b> (Nitisols classification, pH, crop suitability);
+          <b>Infrastructure</b> (tarmac km, grid proximity, 4G coverage). Each produces a
+          scored suitability report with KPIs derived from the drawn survey area.
+        </div>
+        <span class="fcard-tag">ANALYSIS</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">🚧</span>
+        <div class="fcard-title">Airspace Intelligence</div>
+        <div class="fcard-body">
+          Pre-loaded Kenya NFZ/airspace database: JKIA Airport CTR (8 km),
+          Wilson Airport CTZ (3 km), Embakasi Military Zone (2 km),
+          State House Government Restricted Area (1.5 km), Nairobi National Park buffer
+          (500 m). Danger zones rendered in red, warning zones in amber. All zones
+          visualised on the map with radius circles and centroid markers that open info
+          popups with type, radius, and enforcement level.
+        </div>
+        <span class="fcard-tag">SAFETY</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">🔄</span>
+        <div class="fcard-title">Change Detection</div>
+        <div class="fcard-body">
+          Six bi-temporal analysis types against a Jan 2024 → Mar 2026 baseline:
+          <b>Land Use Change</b> (94% confidence, vegetation loss vs. built gain);
+          <b>Deforestation Detection</b> (canopy loss hectares, CO₂ quantification);
+          <b>Illegal Mining</b> (site count, NEMA alert trigger); <b>Flood Mapping</b>
+          (SAR Sentinel-1 inundation extent, depth range); <b>Urban Expansion</b>
+          (growth rate %/yr); <b>Bathymetric LiDAR</b> (532 nm green + 1064 nm IR
+          dual-wavelength, 40 m water depth, 5–20 pts/m²). Source: Sentinel-2 10 m.
+        </div>
+        <span class="fcard-tag">MONITORING</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">📡</span>
+        <div class="fcard-title">Drone Log &amp; Telemetry</div>
+        <div class="fcard-body">
+          Live telemetry dashboard with six real-time channels: altitude AGL (m), ground
+          speed (m/s), battery % (with low-battery colour warning), compass heading (°),
+          RC signal strength (%), and total distance flown (m). Animated canvas chart
+          renders altitude profile and battery decay curve simultaneously. Demo flight mode
+          animates a marker along the generated waypoints at 500 ms intervals.
+          Flight history stores four pre-loaded Kenya missions; supports CSV/JSON import.
+        </div>
+        <span class="fcard-tag">TELEMETRY</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">🔌</span>
+        <div class="fcard-title">Aircraft Connection</div>
+        <div class="fcard-body">
+          Three hardware connection protocols: <b>Web Bluetooth BLE</b> — pairs with DJI RC
+          controllers, Herelink, Skydroid, FrSky (requires Chrome/Chromium);
+          <b>WebSocket MAVLink</b> — connects to Mission Planner, QGroundControl, or
+          ArduPilot running on the local WiFi network at a user-specified host:port;
+          <b>DJI Cloud API</b> — SDK integration for Phantom 4 RTK, Mavic 3 Enterprise,
+          Matrice 300 RTK, and Matrice 400 via DJI developer account.
+        </div>
+        <span class="fcard-tag">CONNECTIVITY</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">🪪</span>
+        <div class="fcard-title">KCAA Pilot Registry</div>
+        <div class="fcard-body">
+          Full licence management system with five pre-loaded Kenya RPAS operators.
+          Search by pilot name or licence ID; filter by registered drone model and operation
+          type (VLOS / BVLOS / Night / Urban / Survey). Multi-criteria mission validation
+          cross-checks licence class against planned altitude, checks medical and licence
+          expiry dates with 30-day advance warning, and verifies survey operation
+          authorisation. New pilot registration form. Compliant with KCAA LN 182/2022.
+        </div>
+        <span class="fcard-tag">COMPLIANCE</span>
+      </div>
+
+      <div class="fcard">
+        <span class="fcard-icon">🌍</span>
+        <div class="fcard-title">Environmental Planning Lab</div>
+        <div class="fcard-body">
+          Full-stack 7-step GIS modelling pipeline: Satellite Ingestion → DEM Extraction
+          → Watershed Delineation → SWAT/HEC-RAS Hydrology → MCE Suitability → Urban
+          Zoning → Cartographic Render. Supports four preset Kenya study regions plus
+          unlimited freehand custom AOI drawing anywhere on the map. Generates a
+          professional cartographic master plan with north arrow, scale bar, legend,
+          graticule, and OSM base map, downloadable as PNG/PDF. EMCA Cap. 387 compliant.
+        </div>
+        <span class="fcard-tag">PLANNING LAB</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ AIRCRAFT ══ -->
+<section class="section" id="aircraft">
+  <div class="wrap">
+    <div class="eyebrow">Aircraft Database</div>
+    <h2 class="sec-h">16 platforms.<br>Every <em>KCAA</em> class.</h2>
+    <p class="sec-lead">
+      The integrated aircraft database spans the full operational spectrum used in Kenya —
+      from sub-250 g Open A1 category drones to manned turboprop survey aircraft. Selecting
+      a platform automatically sets altitude limits and validates them against KCAA class
+      restrictions before any flight plan is generated.
+    </p>
+
+    <!-- MULTIROTOR -->
+    <span class="cat-label">⬡ MULTIROTOR — 7 PLATFORMS</span>
+    <table class="dtable" style="border-radius:0 0 8px 8px;">
+      <thead>
+        <tr><th>Platform</th><th>Max Alt.</th><th>Speed</th><th>Endurance</th><th>Sensor Suite</th><th>Area Coverage</th><th>KCAA Class</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DJI Phantom 4 RTK</td><td>120 m</td><td>14 m/s</td><td>30 min</td><td>20 MP RGB + RTK GNSS</td><td>2 km² @ 120 m</td><td><span class="badge ba">C2</span></td></tr>
+        <tr><td>DJI Mavic 3 Enterprise</td><td>120 m</td><td>15 m/s</td><td>45 min</td><td>20 MP RGB + Multispectral</td><td>2.5 km² @ 120 m</td><td><span class="badge ba">C2</span></td></tr>
+        <tr><td>DJI Matrice 300 RTK</td><td>120 m</td><td>23 m/s</td><td>55 min</td><td>Multi-payload (up to 3)</td><td>5 km² @ 120 m</td><td><span class="badge bam">C3</span></td></tr>
+        <tr><td>DJI Matrice 400</td><td>120 m</td><td>21 m/s</td><td>42 min</td><td>Multi-payload</td><td>4.5 km² @ 120 m</td><td><span class="badge bam">C3</span></td></tr>
+        <tr><td>Autel EVO Nano+</td><td>120 m</td><td>15 m/s</td><td>28 min</td><td>50 MP RGB</td><td>1 km² @ 100 m</td><td><span class="badge bg">C1</span></td></tr>
+        <tr><td>Yuneec H520E</td><td>120 m</td><td>12 m/s</td><td>28 min</td><td>RGB / Thermal</td><td>2 km² @ 120 m</td><td><span class="badge ba">C2</span></td></tr>
+        <tr><td>Parrot Anafi USA</td><td>120 m</td><td>15 m/s</td><td>32 min</td><td>21 MP RGB + Thermal + 32× Zoom</td><td>1.5 km² @ 100 m</td><td><span class="badge ba">C2</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- FIXED-WING -->
+    <span class="cat-label">⚡ FIXED-WING — 4 PLATFORMS</span>
+    <table class="dtable" style="border-radius:0 0 8px 8px;">
+      <thead>
+        <tr><th>Platform</th><th>Max Alt.</th><th>Speed</th><th>Endurance</th><th>Camera</th><th>GSD @ Altitude</th><th>KCAA</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>senseFly eBee X</td><td>150 m</td><td>57 km/h</td><td>90 min</td><td>RGB / MS / Thermal</td><td>2 cm GSD @ 120 m</td><td><span class="badge ba">C2</span></td></tr>
+        <tr><td>senseFly eBee SQ</td><td>120 m</td><td>54 km/h</td><td>55 min</td><td>Parrot Sequoia+ MS</td><td>3 cm GSD @ 120 m</td><td><span class="badge ba">C2</span></td></tr>
+        <tr><td>WingtraOne GEN II</td><td>150 m</td><td>VTOL hover</td><td>55 min</td><td>Sony RX1R II 42 MP</td><td>0.7 cm GSD @ 120 m</td><td><span class="badge bam">C3</span></td></tr>
+        <tr><td>Trimble UX5</td><td>300 m</td><td>80 km/h</td><td>50 min</td><td>Sony NEX-5T</td><td>2.5 cm GSD @ 120 m</td><td><span class="badge bam">C3</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- VTOL + MANNED -->
+    <div class="two-col" style="margin-top:0;">
+      <div>
+        <span class="cat-label">⟁ VTOL HYBRID — 2 PLATFORMS</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Platform</th><th>Endurance</th><th>Coverage</th><th>KCAA</th></tr></thead>
+          <tbody>
+            <tr><td>Quantum Trinity F90+</td><td>90 min</td><td>500 ha / sortie</td><td><span class="badge bam">C3</span></td></tr>
+            <tr><td>Sky-Hero SPEAR</td><td>60 min</td><td>300 ha @ 120 m</td><td><span class="badge bam">C3</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <span class="cat-label">✈ MANNED AIRCRAFT — 3 PLATFORMS</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Platform</th><th>Service Ceiling</th><th>Daily Area</th></tr></thead>
+          <tbody>
+            <tr><td>Cessna 172 Skyhawk</td><td>4,000 m</td><td>500 km²/day</td></tr>
+            <tr><td>Beechcraft King Air B200</td><td>10,668 m</td><td>2,000 km²/day</td></tr>
+            <tr><td>Cessna 206 Stationair</td><td>4,572 m</td><td>800 km²/day</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SENSORS ══ -->
+<section class="section" id="sensors">
+  <div class="wrap">
+    <div class="eyebrow">Sensor &amp; Camera Catalogue</div>
+    <h2 class="sec-h">13 sensors.<br><em>Six</em> spectral types.</h2>
+    <p class="sec-lead">
+      Every sensor in the catalogue includes GSD at operating altitude, bit depth, and
+      compatible post-processing software. The platform automatically cross-validates
+      sensor selection against the chosen drone's payload capacity.
+    </p>
+
+    <div class="two-col" style="margin-top:40px;">
+      <div>
+        <span class="cat-label">RGB — 3 SENSORS</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Sensor</th><th>Resolution</th><th>GSD</th><th>Bits</th></tr></thead>
+          <tbody>
+            <tr><td>Sony RX1R II</td><td>42 MP · 35 mm FF</td><td>1.5 cm @ 100 m</td><td>14-bit RAW</td></tr>
+            <tr><td>DJI Zenmuse P1</td><td>45 MP · Full Frame</td><td>2.7 cm @ 200 m</td><td>DNG RAW</td></tr>
+            <tr><td>Phase One iXM-100</td><td>100 MP · Medium Format</td><td>0.8 cm @ 100 m</td><td>16-bit RAW</td></tr>
+          </tbody>
+        </table>
+
+        <span class="cat-label" style="margin-top:18px;">MULTISPECTRAL — 3 SENSORS</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Sensor</th><th>Bands</th><th>GSD</th><th>Bits</th></tr></thead>
+          <tbody>
+            <tr><td>MicaSense RedEdge-P</td><td>B, G, R, RE, NIR + Panchro</td><td>6.5 cm @ 120 m</td><td>16-bit TIF</td></tr>
+            <tr><td>Parrot Sequoia+</td><td>G, R, RE, NIR (4-band)</td><td>4.8 cm @ 100 m</td><td>16-bit TIF</td></tr>
+            <tr><td>MicaSense Altum-PT</td><td>B, G, R, RE, NIR + Thermal</td><td>3.2 cm @ 100 m</td><td>16-bit + IR</td></tr>
+          </tbody>
+        </table>
+
+        <span class="cat-label" style="margin-top:18px;">THERMAL — 2 SENSORS</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Sensor</th><th>Type</th><th>GSD</th><th>Temp Range</th></tr></thead>
+          <tbody>
+            <tr><td>FLIR Zenmuse XT2</td><td>Radiometric FLIR · 16-bit</td><td>20 cm @ 100 m</td><td>−25 to 135 °C</td></tr>
+            <tr><td>DJI Zenmuse H20T</td><td>RGB + Thermal + Laser</td><td>Dual mode</td><td>−40 to 150 °C</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <span class="cat-label">LiDAR — 3 SENSORS</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Sensor</th><th>Density</th><th>Range</th><th>Returns</th></tr></thead>
+          <tbody>
+            <tr><td>DJI Zenmuse L2</td><td>250 pts/m²</td><td>250 m</td><td>5 returns</td></tr>
+            <tr><td>Velodyne VLP-16</td><td>300 K pts/sec</td><td>100 m</td><td>16 channels</td></tr>
+            <tr><td>YellowScan Mapper+</td><td>200 pts/m²</td><td>75 m</td><td>Full waveform</td></tr>
+          </tbody>
+        </table>
+
+        <span class="cat-label" style="margin-top:18px;">HYPERSPECTRAL — 1 SENSOR</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Sensor</th><th>Spectral Range</th><th>Bands</th><th>GSD</th></tr></thead>
+          <tbody>
+            <tr><td>Resonon Pika XC2</td><td>400–1000 nm</td><td>281 bands</td><td>30 cm @ 100 m</td></tr>
+          </tbody>
+        </table>
+
+        <span class="cat-label" style="margin-top:18px;">OBLIQUE — 1 SENSOR</span>
+        <table class="dtable" style="border-radius:0 0 8px 8px;">
+          <thead><tr><th>Sensor</th><th>Configuration</th><th>GSD</th><th>Coverage</th></tr></thead>
+          <tbody>
+            <tr><td>Leica CityMapper-2</td><td>5-lens: nadir + 4 oblique</td><td>3 cm @ 400 m</td><td>Full city block</td></tr>
+          </tbody>
+        </table>
+
+        <div class="abox tip" style="margin-top:24px;">
+          <div class="icon">↗</div>
+          <div>
+            <strong>Software Compatibility</strong>
+            All sensors list compatible post-processing software — Pix4D, Agisoft Metashape,
+            DJI Terra, QGIS, ArcGIS Pro, and ENVI. Selecting a sensor in the Aircraft tab
+            displays GSD, resolution, and the full compatible software list automatically.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ENVIRONMENTAL PLANNING LAB ══ -->
+<section class="section" id="epl">
+  <div class="wrap">
+    <div class="eyebrow">Environmental Planning Lab</div>
+    <h2 class="sec-h">Satellite to <em>master plan</em><br>in seven steps.</h2>
+    <p class="sec-lead">
+      The EPL implements a professional-grade GIS modelling pipeline that takes raw satellite
+      imagery and DEM data as inputs and produces a county-ready land-use zoning plan, complete
+      with hydrological analysis, multi-criteria land suitability evaluation, and a print-quality
+      cartographic master plan document.
+    </p>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">01</div>
+        <div class="pipe-title">Satellite Ingestion</div>
+        <div class="pipe-desc">Band compositing, cloud masking, and NDVI calculation on
+        Sentinel-2 10 m imagery. Supports Sentinel-2 (free), Landsat 8, Planet Labs 3 m,
+        and WorldView-3 0.3 m. Band combination selection: B2, B3, B4, B8 (RGB + NIR).</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">02</div>
+        <div class="pipe-title">DEM Extraction &amp; Terrain Analysis</div>
+        <div class="pipe-desc">SRTM 30 m, ALOS 12.5 m, or Copernicus 30 m elevation model ingestion.
+        Slope, aspect, hillshade, and curvature derivative computation.
+        Esri World Hillshade tile overlay activated at 62% opacity over satellite base, with
+        terrain-irregularity contour rings, spot elevation markers, and slope aspect arrows.</div>
+        <div class="pipe-formula">S = √ ( (∂z/∂x)² + (∂z/∂y)² )</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">03</div>
+        <div class="pipe-title">Watershed &amp; Drainage Delineation</div>
+        <div class="pipe-desc">D8 flow direction algorithm (Jenson &amp; Domingue, 1988) applied to a
+        depression-filled DEM. Flow accumulation raster, stream network extraction, pour-point
+        watershed delineation. Drainage density calculated in km/km². Tools: GRASS GIS r.watershed,
+        GDAL, WhiteboxTools.</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">04</div>
+        <div class="pipe-title">Hydrological Modelling</div>
+        <div class="pipe-desc">SWAT+ simulation outputs: annual runoff 485 mm/yr, baseflow 120 mm/yr,
+        evapotranspiration 840 mm/yr, peak flow 380 m³/s. HEC-RAS 1D hydraulic analysis:
+        water surface elevation 12.4 m, flow velocity 1.8 m/s, Manning's n 0.045.
+        100-year flood extent delineated and added to the composite map.</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">05</div>
+        <div class="pipe-title">Multi-Criteria Suitability Evaluation (MCE)</div>
+        <div class="pipe-desc">User-adjustable weighted overlay across four criteria: elevation,
+        flood risk, slope, and distance to water. Weights tunable via live sliders (must sum to 100%).
+        Raster suitability grid classified to five levels: Very High → Very Low. Can be recalculated
+        independently from the full pipeline after weight adjustments.</div>
+        <div class="pipe-formula">Suitability = Σ ( wᵢ × cᵢ ) for i = 1 … 4</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">06</div>
+        <div class="pipe-title">Urban Zoning Generation</div>
+        <div class="pipe-desc">Raster suitability classification converted to polygon vectors.
+        Eight land-use zone types assigned from MCE scores. Zone area statistics computed in
+        hectares. Individual zone visibility toggle and opacity control. GeoJSON export with
+        full attribute table: zone_id, zone_label, area_ha, description, CRS EPSG:4326.</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">07</div>
+        <div class="pipe-title">Cartographic Rendering &amp; Master Plan</div>
+        <div class="pipe-desc">A3 landscape canvas (1754 × 1240 px) with white page, cream
+        map background, OSM-style road network (primary + secondary roads with casing and fill),
+        buildings, and vegetation beneath semi-transparent zone polygons. Conservation and wetland
+        zones use diagonal hatch fill per British OS convention. North arrow, alternating-block
+        scale bar (0–4 km, 1:50,000), coordinate graticule labels, and a seven-section legend —
+        all inside the double-rule neatline frame. Times New Roman font throughout.
+        Exports as PNG download plus print-to-PDF preview window.</div>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- ZONES -->
+    <div class="eyebrow">Land-Use Classification Reference</div>
+    <div class="zone-grid">
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(210,160,220,.85);border:2px solid #7B2D8B"></div>
+        <div><div class="zone-name">Urban Centre</div><div class="zone-hint">Very High MCE — commercial &amp; civic core</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(255,230,150,.85);border:2px solid #B8860B"></div>
+        <div><div class="zone-name">Residential Area</div><div class="zone-hint">High MCE — low/medium density housing</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(175,225,170,.85);border:2px solid #2E7D32"></div>
+        <div><div class="zone-name">Agriculture</div><div class="zone-hint">Moderate MCE — mixed-use farming</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(100,180,100,.85);border:2px solid #1B5E20"></div>
+        <div><div class="zone-name">Conservation Zone ╱╱</div><div class="zone-hint">Low MCE — ecological buffer · diagonal hatch</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(150,210,230,.85);border:2px solid #01579B"></div>
+        <div><div class="zone-name">Wetlands ╱╱</div><div class="zone-hint">Very Low MCE — protection corridors · hatched</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(255,165,130,.85);border:2px solid #B71C1C"></div>
+        <div><div class="zone-name">Flood Risk Zone</div><div class="zone-hint">No-build — 100-year flood inundation area</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(100,170,220,.85);border:2px solid #0D47A1"></div>
+        <div><div class="zone-name">Marina / Port</div><div class="zone-hint">Water-adjacent — maritime &amp; waterfront</div></div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-swatch" style="background:rgba(240,200,140,.85);border:2px solid #E65100"></div>
+        <div><div class="zone-name">Infrastructure Corridor</div><div class="zone-hint">Roads, utilities &amp; service easements</div></div>
+      </div>
+    </div>
+
+    <!-- CUSTOM AOI -->
+    <div class="abox warn" style="margin-top:32px;">
+      <div class="icon">✏️</div>
+      <div>
+        <strong>Drawing a Custom AOI — Step by Step</strong>
+        1. Open the Planning Lab and select <em>Custom AOI from Map</em> in the region dropdown.
+        2. Click <b>Draw AOI</b> in the EPL map toolbar — the cursor changes to a crosshair.
+        3. Click on the map to place polygon vertices. A green preview line closes to the first point.
+        4. <b>Double-click</b> to finish the polygon. The boundary is locked and area calculated from real geodetic bounds.
+        5. The seven-step pipeline then runs entirely within the bounds of your drawn area.
+        The model parameters, MCE suitability grid, zone polygons, and master plan all
+        adapt automatically to the actual centre and extent of your custom AOI.
+      </div>
+    </div>
+
+    <!-- EPL STUDY REGIONS -->
+    <div class="hr"></div>
+    <div class="eyebrow">Pre-Loaded Study Regions</div>
+    <table class="dtable" style="margin-top:16px;">
+      <thead><tr><th>Region</th><th>Coordinates (Centre)</th><th>Default Zoom</th><th>Study Area</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Nairobi Metropolitan</td><td>1.2864° S, 36.8172° E</td><td>12</td><td>420 ha</td><td>Default region</td></tr>
+        <tr><td>Mombasa Port &amp; Coast</td><td>4.0435° S, 39.6682° E</td><td>12</td><td>285 ha</td><td>Coastal / maritime</td></tr>
+        <tr><td>Kisumu Lakeside</td><td>0.0917° S, 34.7680° E</td><td>12</td><td>310 ha</td><td>Lake Victoria shore</td></tr>
+        <tr><td>Nakuru Rift Valley</td><td>0.3031° S, 36.0800° E</td><td>12</td><td>375 ha</td><td>Rift Valley basin</td></tr>
+        <tr><td>Custom AOI</td><td>User-drawn on map</td><td>Dynamic</td><td>Computed</td><td>Any location globally</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ EXPORTS ══ -->
+<section class="section" id="exports">
+  <div class="wrap">
+    <div class="eyebrow">Export &amp; Interoperability</div>
+    <h2 class="sec-h">Seven flight formats.<br><em>Every</em> GCS supported.</h2>
+
+    <div class="two-col">
+      <div>
+        <div class="eyebrow">Flight Plan Export Formats</div>
+        <table class="dtable">
+          <thead><tr><th>Format</th><th>Function</th><th>Compatible Software</th></tr></thead>
+          <tbody>
+            <tr><td>GeoJSON</td><td><code>xGeoJSON()</code></td><td>QGIS · ArcGIS · PostGIS · Mapbox · Leaflet</td></tr>
+            <tr><td>KML</td><td><code>xKML()</code></td><td>Google Earth Pro · Google Maps · ArcGIS Earth</td></tr>
+            <tr><td>CSV Waypoints</td><td><code>xCSV()</code></td><td>Excel · Any GCS · Python pandas</td></tr>
+            <tr><td>Mission Planner .waypoints</td><td><code>xMP()</code></td><td>ArduPilot · Mission Planner · MAVLink GCS</td></tr>
+            <tr><td>DJI Pilot 2 JSON</td><td><code>xDJI()</code></td><td>DJI Matrice 300/400 · Phantom 4 RTK</td></tr>
+            <tr><td>Litchi CSV</td><td><code>xLitchi()</code></td><td>Litchi iOS / Android · DJI consumer drones</td></tr>
+            <tr><td>GPX</td><td><code>xGPX()</code></td><td>Garmin devices · OSMAnd · Basecamp · QGIS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="eyebrow">Planning Lab Export Formats</div>
+        <table class="dtable">
+          <thead><tr><th>Format</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>GeoJSON</td><td>All 8 zone polygons with full attribute table, EPSG:4326. Loads directly into ArcGIS Pro, QGIS, or AutoCAD Map 3D.</td></tr>
+            <tr><td>Planning Report (.txt)</td><td>MCE weights, SWAT hydrology data, land classification summary, algorithm references, KCAA/EMCA regulatory notes.</td></tr>
+            <tr><td>Master Plan (.png)</td><td>1754 × 1240 px A3 landscape, cartographic quality. Immediate PNG download on generation.</td></tr>
+            <tr><td>Master Plan (.pdf)</td><td>Via browser Print dialog from the generated preview window. Ctrl+P / ⌘P → Save as PDF.</td></tr>
+          </tbody>
+        </table>
+        <div class="abox info" style="margin-top:16px;">
+          <div class="icon">ℹ</div>
+          <div>
+            <strong>GIS Interoperability</strong>
+            Planning Lab GeoJSON exports use EPSG:4326 and include
+            <code>zone_id</code>, <code>zone_label</code>, <code>area_ha</code>,
+            and <code>description</code> attributes compatible with ArcGIS Pro, QGIS, and
+            AutoCAD Map 3D without conversion.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KCAA ══ -->
+<section class="section" id="kcaa">
+  <div class="wrap">
+    <div class="eyebrow">KCAA Compliance System</div>
+    <h2 class="sec-h">Licence validation<br><em>before</em> every flight.</h2>
+    <p class="sec-lead">
+      The KCAA Pilot Registry enforces Kenya Civil Aviation Authority RPAS Regulations 2020
+      (Legal Notice No. 182/2022) inside the mission planning workflow. Validation runs
+      automatically when a pilot is assigned to a flight plan.
+    </p>
+
+    <div class="two-col" style="margin-top:40px;">
+      <div>
+        <div class="eyebrow">RPAS Licence Classes — Kenya</div>
+        <table class="dtable">
+          <thead><tr><th>Class</th><th>Max MTOW</th><th>Authorised Operations</th></tr></thead>
+          <tbody>
+            <tr><td>Open A1 <span class="badge bg" style="margin-left:4px">VLOS</span></td><td>&lt; 250 g</td><td>Over people (not crowds) · daylight</td></tr>
+            <tr><td>Open A2 <span class="badge bg" style="margin-left:4px">VLOS</span></td><td>&lt; 4 kg</td><td>30 m lateral separation from uninvolved persons</td></tr>
+            <tr><td>Open A3 <span class="badge bg" style="margin-left:4px">VLOS</span></td><td>&lt; 25 kg</td><td>Away from residential, commercial, industrial areas</td></tr>
+            <tr><td>Specific STS-01 <span class="badge ba" style="margin-left:4px">BVLOS</span></td><td>&lt; 25 kg</td><td>Urban · Night · BVLOS with low-risk mitigations</td></tr>
+            <tr><td>Specific STS-02 <span class="badge ba" style="margin-left:4px">BVLOS</span></td><td>&lt; 25 kg</td><td>BVLOS in controlled airspace with ATC coordination</td></tr>
+            <tr><td>Certified CERT-LG <span class="badge bp" style="margin-left:4px">ALL</span></td><td>Unlimited</td><td>All operations — full KCAA certification required</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="eyebrow">Pre-Loaded KCAA Pilot Registry</div>
+        <table class="dtable">
+          <thead><tr><th>Pilot</th><th>Licence ID</th><th>Category</th><th>Drone</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Kelvin Maweu</td><td><code>DOC-2024-001</code></td><td>STS-01</td><td>DJI Phantom 4 RTK</td><td><span class="badge bg">VALID</span></td></tr>
+            <tr><td>Sarah Kimani</td><td><code>DOC-2024-042</code></td><td>A2</td><td>DJI Mavic 3</td><td><span class="badge bg">VALID</span></td></tr>
+            <tr><td>James Ochieng</td><td><code>DOC-2023-119</code></td><td>STS-02</td><td>WingtraOne GEN II</td><td><span class="badge br">EXPIRED</span></td></tr>
+            <tr><td>Mary Wanjiru</td><td><code>DOC-2024-087</code></td><td>A1</td><td>DJI Mini 3</td><td><span class="badge bg">VALID</span></td></tr>
+            <tr><td>Survey Team B</td><td><code>DOC-2024-203</code></td><td>CERT-LG</td><td>senseFly eBee X</td><td><span class="badge bg">VALID</span></td></tr>
+          </tbody>
+        </table>
+        <div class="abox warn" style="margin-top:16px;">
+          <div class="icon">⚠</div>
+          <div>
+            <strong>Mission Validation Checks</strong>
+            (1) Licence validity and days to expiry · (2) Medical certificate currency ·
+            (3) Licence class vs. planned altitude (Open category: max 120 m AGL) ·
+            (4) Survey operation authorisation in certificate · (5) 30-day advance expiry warning.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NFZ -->
+    <div class="hr"></div>
+    <div class="eyebrow">Kenya No-Fly Zone Database</div>
+    <table class="dtable" style="margin-top:16px;">
+      <thead><tr><th>Zone</th><th>Centre (WGS 84)</th><th>Radius</th><th>Type</th><th>Level</th></tr></thead>
+      <tbody>
+        <tr><td>JKIA Restricted Zone</td><td>1.3192° S, 36.9275° E</td><td>8,000 m</td><td>Airport CTR</td><td><span class="badge br">DANGER</span></td></tr>
+        <tr><td>Wilson Airport CTZ</td><td>1.3217° S, 36.8148° E</td><td>3,000 m</td><td>Control Traffic Zone</td><td><span class="badge br">DANGER</span></td></tr>
+        <tr><td>Embakasi Military</td><td>1.3133° S, 36.9000° E</td><td>2,000 m</td><td>Military Restricted</td><td><span class="badge br">DANGER</span></td></tr>
+        <tr><td>State House Restricted</td><td>1.2732° S, 36.8075° E</td><td>1,500 m</td><td>Government Sensitive</td><td><span class="badge br">DANGER</span></td></tr>
+        <tr><td>Nairobi National Park Buffer</td><td>1.3600° S, 36.8800° E</td><td>500 m</td><td>National Park</td><td><span class="badge bam">WARNING</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ QUICK START ══ -->
+<section class="section" id="start">
+  <div class="wrap">
+    <div class="eyebrow">Quick Start</div>
+    <h2 class="sec-h">Open a browser.<br><em>Start</em> flying.</h2>
+
+    <div class="two-col" style="margin-top:40px;">
+      <div>
+        <div class="eyebrow">Option A — GitHub Pages (live now)</div>
+        <div class="code-box">
+          <span class="lang">URL</span>
+          <span class="cn">https://maweu01.github.io/</span><br>
+          <span class="cn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AeroGIS-Survey-Planner</span><br>
+          <br>
+          <span class="cm"># Open in Chrome, Edge, Firefox, or Safari</span><br>
+          <span class="cm"># No login · No account · No API key</span>
+        </div>
+
+        <div class="eyebrow" style="margin-top:28px;">Option B — Clone and run locally</div>
+        <div class="code-box">
+          <span class="lang">bash</span>
+          <span class="cm"># Clone the repository</span><br>
+          <span class="ck">git</span> clone https://github.com/maweu01/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AeroGIS-Survey-Planner<br>
+          <br>
+          <span class="cm"># Open directly (file:// — all features work)</span><br>
+          <span class="ck">open</span> index.html<br>
+          <br>
+          <span class="cm"># Or serve over HTTP (recommended for BLE)</span><br>
+          <span class="ck">python3</span> -m http.server 8080<br>
+          <br>
+          <span class="cm"># Then open: http://localhost:8080</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow">System Requirements</div>
+        <table class="dtable">
+          <thead><tr><th>Requirement</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td>Browser</td><td>Chrome 90+ · Edge 90+ · Firefox 88+ · Safari 15+</td></tr>
+            <tr><td>Web Bluetooth (BLE)</td><td>Chrome / Chromium only (Web Bluetooth API)</td></tr>
+            <tr><td>Internet connection</td><td>Required — tile maps, weather API, Esri DEM, CDN scripts</td></tr>
+            <tr><td>Screen resolution</td><td>1280 × 768 px minimum</td></tr>
+            <tr><td>JavaScript</td><td>Must be enabled</td></tr>
+            <tr><td>Server-side runtime</td><td>Not required</td></tr>
+            <tr><td>npm / Node.js</td><td>Not required</td></tr>
+          </tbody>
+        </table>
+
+        <div class="eyebrow" style="margin-top:28px;">First Mission — 5 Steps</div>
+        <div class="qgrid" style="grid-template-columns:1fr;gap:8px;">
+          <div class="qcard"><div class="qcard-key">Step 1 — Select Survey Area</div><div class="qcard-val">Click a preset shape (Rect / L / Triangle / Corridor / Circle) in the SURVEY sidebar, or click <em>Custom Draw</em> to polygon any area on the map.</div></div>
+          <div class="qcard"><div class="qcard-key">Step 2 — Choose Platform &amp; Sensor</div><div class="qcard-val">Switch to the AIRCRAFT sidebar tab. Select drone category, model, camera type, and sensor. Specs auto-populate and altitude limit enforces KCAA class.</div></div>
+          <div class="qcard"><div class="qcard-key">Step 3 — Set Flight Parameters</div><div class="qcard-val">Adjust altitude, FOV, side overlap, front overlap, and wind direction sliders. The swath width and line spacing update live.</div></div>
+          <div class="qcard"><div class="qcard-key">Step 4 — Generate Flight Plan</div><div class="qcard-val">Click <b>Generate Flight Plan</b>. Parallel flight lines with waypoints appear on the map. Mission Summary panel shows lines, waypoints, area, swath, GSD, and estimated image count.</div></div>
+          <div class="qcard"><div class="qcard-key">Step 5 — Export</div><div class="qcard-val">Use the <em>Quick Export</em> buttons in the Mission Summary panel, or switch to the Export tab for the full format menu including Mission Planner, DJI Pilot 2, and Litchi.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAP TOOLS -->
+    <div class="hr"></div>
+    <div class="eyebrow">Map Toolbar Reference</div>
+    <div class="qgrid" style="margin-top:20px;">
+      <div class="qcard"><div class="qcard-key">▶ Select</div><div class="qcard-val">Default tool. Click features for info popups.</div></div>
+      <div class="qcard"><div class="qcard-key">⬡ Draw Polygon</div><div class="qcard-val">Freehand survey area. Click vertices, double-click to close.</div></div>
+      <div class="qcard"><div class="qcard-key">📏 Distance</div><div class="qcard-val">Click-click to measure. Double-click to finish. Shows m / km.</div></div>
+      <div class="qcard"><div class="qcard-key">▭ Area</div><div class="qcard-val">Click polygon, double-click finish. Shows m² / ha.</div></div>
+      <div class="qcard"><div class="qcard-key">⤢ Fit View</div><div class="qcard-val">Zooms to current survey area bounds.</div></div>
+      <div class="qcard"><div class="qcard-key">📍 My Location</div><div class="qcard-val">Geolocation with accuracy circle. Chrome/HTTPS recommended.</div></div>
+      <div class="qcard"><div class="qcard-key">🗺 Basemap</div><div class="qcard-val">Satellite · Hybrid · Topographic · OSM street</div></div>
+      <div class="qcard"><div class="qcard-key">⛰ DEM Overlay</div><div class="qcard-val">Esri World Hillshade (SRTM) + OpenTopoMap contours</div></div>
+      <div class="qcard"><div class="qcard-key">🚧 Show NFZ</div><div class="qcard-val">Renders all 5 Kenya no-fly zones on the map canvas</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AUTHOR ══ -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow">Author</div>
+    <h2 class="sec-h">Built by a practitioner,<br>for <em>practitioners</em>.</h2>
+    <div class="author-card">
+      <div class="author-av">KM</div>
+      <div style="flex:1">
+        <div class="author-name">Kelvin Maweu</div>
+        <div class="author-role">GIS &amp; Remote Sensing Engineer · Aeronautical Engineer · Nairobi, Kenya</div>
+        <div class="author-bio">
+          BSc GIS &amp; Remote Sensing · Diploma Aeronautical Engineering. Kelvin built AeroGIS Pro from
+          direct field experience planning and executing RPAS aerial surveys in Kenya. Every feature in the
+          platform — from the KCAA licence validation logic to the Environmental Planning Lab's hydrological
+          modelling workflow — addresses a specific problem he encountered in operational practice.
+          The application reflects the real-world needs of aerial survey professionals operating under
+          KCAA regulations, working with demanding county planning clients, and operating in the
+          complex airspace and terrain of East Africa.
+        </div>
+        <div class="author-tags">
+          <span class="badge ba">KCAA RPAS Operator · DOC-2024-001</span>
+          <span class="badge bg">BSc GIS &amp; Remote Sensing</span>
+          <span class="badge bam">Dip. Aeronautical Engineering</span>
+          <span class="badge bp">Environmental Planning</span>
+          <span class="badge ba">Wilson Airport · HKNW · Nairobi</span>
+          <span class="badge bg">GitHub · maweu01</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-logo">Aero<span>GIS</span> Pro</div>
+    <div class="footer-text">
+      AeroGIS Pro v4.0 — Aerial Survey Intelligence Platform<br>
+      KCAA RPAS Regulations 2020 (Legal Notice No. 182/2022) Compliant<br>
+      Wilson Airport · HKNW · Nairobi, Kenya<br>
+      <br>
+      <span style="color:var(--faint);font-size:13px;">
+        Leaflet 1.9.4 · Leaflet Draw 1.0.4 · Open-Meteo API · Esri World Services · OpenStreetMap<br>
+        Zero server dependencies · Open source · Hosted on GitHub Pages
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
